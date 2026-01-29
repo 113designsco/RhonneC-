@@ -1,0 +1,638 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#ffffff" />
+  <title>Rhonne C — Creator</title>
+
+  <!-- Fonts (single-file page; fonts load from Google) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#ffffff;
+      --ink:#2e2e2e;
+      --muted:#6b6b6b;
+      --accent:#ae7474;
+      --card:#ffffff;
+      --border: rgba(46,46,46,.12);
+      --shadow: 0 12px 30px rgba(46,46,46,.08);
+      --radius: 18px;
+      --radius2: 14px;
+
+      --cinzel: "Cinzel", serif;
+      --mont: "Montserrat", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+
+    @media (prefers-color-scheme: dark){
+      :root{
+        --bg:#121212;
+        --ink:#f2f2f2;
+        --muted:#b8b8b8;
+        --card:#181818;
+        --border: rgba(242,242,242,.14);
+        --shadow: 0 14px 34px rgba(0,0,0,.35);
+      }
+    }
+
+    *{ box-sizing: border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      background: radial-gradient(900px 500px at 30% -10%, rgba(174,116,116,.16), transparent 60%),
+                  radial-gradient(900px 500px at 80% 10%, rgba(174,116,116,.10), transparent 60%),
+                  var(--bg);
+      color: var(--ink);
+      font-family: var(--mont);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    a{ color: inherit; text-decoration: none; }
+    .wrap{
+      width: min(980px, 92vw);
+      margin: 0 auto;
+      padding: 18px 0 80px;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content: space-between;
+      align-items:center;
+      gap: 12px;
+      padding: 14px 2px 10px;
+    }
+    .mark{
+      display:flex; align-items:center; gap:10px;
+      min-width: 0;
+    }
+    .logo{
+      width: 36px; height: 36px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background:
+        radial-gradient(12px 12px at 28% 28%, rgba(174,116,116,.55), transparent 60%),
+        radial-gradient(16px 16px at 72% 68%, rgba(174,116,116,.25), transparent 60%),
+        linear-gradient(180deg, rgba(174,116,116,.10), transparent);
+      box-shadow: var(--shadow);
+      flex: 0 0 auto;
+    }
+    .mark h1{
+      margin:0;
+      font-family: var(--cinzel);
+      font-size: 16px;
+      letter-spacing: .06em;
+      font-weight: 700;
+      text-transform: uppercase;
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+    }
+    .mark .sub{
+      margin:2px 0 0;
+      font-size: 12.5px;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+    }
+    .chiprow{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .chip{
+      font-size: 12px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.6);
+      backdrop-filter: blur(6px);
+    }
+    @media (prefers-color-scheme: dark){
+      .chip{ background: rgba(24,24,24,.6); }
+    }
+
+    .hero{
+      margin-top: 10px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(174,116,116,.10), transparent 60%);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .heroInner{
+      padding: 22px 18px 18px;
+      display:grid;
+      gap: 14px;
+    }
+    .tagline{
+      font-family: var(--cinzel);
+      font-size: clamp(22px, 3.8vw, 34px);
+      line-height: 1.2;
+      margin: 0;
+      letter-spacing: .02em;
+    }
+    .bio{
+      margin: 0;
+      color: var(--muted);
+      font-size: 14.5px;
+      max-width: 70ch;
+    }
+    .accent{
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .links{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 6px;
+    }
+    .btn{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      box-shadow: 0 10px 22px rgba(46,46,46,.06);
+      transition: transform .15s ease, border-color .15s ease;
+    }
+    .btn:hover{ transform: translateY(-1px); border-color: rgba(174,116,116,.45); }
+
+    /* Primary link button styling */
+    .btn.primaryLink{
+      border-color: rgba(174,116,116,.55);
+      background: linear-gradient(180deg, rgba(174,116,116,.16), rgba(174,116,116,.06));
+    }
+
+    .btn .left{
+      display:flex; align-items:center; gap: 10px;
+      min-width: 0;
+    }
+    .icon{
+      width: 34px; height: 34px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      display:grid; place-items:center;
+      color: var(--accent);
+      background: linear-gradient(180deg, rgba(174,116,116,.10), transparent);
+      flex: 0 0 auto;
+      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: .04em;
+    }
+    .btn .title{
+      display:flex; flex-direction: column; gap: 2px;
+      min-width: 0;
+    }
+    .btn .title strong{
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: .01em;
+    }
+    .btn .title span{
+      font-size: 12px;
+      color: var(--muted);
+      overflow:hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .arrow{ color: var(--muted); font-size: 18px; flex: 0 0 auto; }
+
+    .grid{
+      margin-top: 16px;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    .card{
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: var(--card);
+      box-shadow: var(--shadow);
+      padding: 16px;
+    }
+    .card h2{
+      margin: 0 0 8px;
+      font-family: var(--cinzel);
+      font-size: 16px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+    .card p{ margin: 0; color: var(--muted); font-size: 14px; }
+
+    .pillset{
+      display:flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .pill{
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 8px 10px;
+      font-size: 12.5px;
+      background: linear-gradient(180deg, rgba(174,116,116,.08), transparent);
+    }
+
+    form{ margin-top: 10px; display:grid; gap: 10px; }
+    label{ font-size: 12px; color: var(--muted); }
+    input, textarea, select{
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 12px;
+      font-family: var(--mont);
+      font-size: 14px;
+      color: var(--ink);
+      background: transparent;
+      outline: none;
+    }
+    textarea{ min-height: 92px; resize: vertical; }
+    .row2{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    .smallnote{ font-size: 12px; color: var(--muted); margin-top: 8px; }
+
+    .actionRow{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+    .primaryBtn{
+      border: 1px solid rgba(174,116,116,.55);
+      background: rgba(174,116,116,.10);
+      color: var(--ink);
+      padding: 12px 14px;
+      border-radius: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform .15s ease, border-color .15s ease;
+      font-family: var(--mont);
+    }
+    .primaryBtn:hover{ transform: translateY(-1px); border-color: rgba(174,116,116,.75); }
+    .ghost{
+      border: 1px solid var(--border);
+      background: transparent;
+      padding: 12px 14px;
+      border-radius: 14px;
+      cursor: pointer;
+      font-family: var(--mont);
+      color: var(--ink);
+    }
+
+    footer{
+      margin-top: 16px;
+      text-align:center;
+      color: var(--muted);
+      font-size: 12px;
+      padding: 16px 0 0;
+    }
+
+    @media (min-width: 860px){
+      .heroInner{
+        grid-template-columns: 1.1fr .9fr;
+        align-items: start;
+        padding: 26px 24px 22px;
+      }
+      .links{ margin-top: 0; }
+      .grid{
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+      .row2{ grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="mark">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>Rhonne C</h1>
+          <div class="sub">SAHM • Health Journey • DIY • Small Biz</div>
+        </div>
+      </div>
+      <div class="chiprow" aria-label="Quick actions">
+        <a class="chip" href="#links">Links</a>
+        <a class="chip" href="#request">Request</a>
+        <a class="chip" href="#brand">Brand deals</a>
+        <a class="chip" href="#media">Media kit</a>
+      </div>
+    </div>
+
+    <section class="hero" aria-label="Hero">
+      <div class="heroInner">
+        <div>
+          <p class="tagline">SAHM | Health Journey | DIY + Small Biz</p>
+          <p class="bio">
+            <span class="accent">Creator + Designer</span> — 113 Design Co. I share real-life lifestyle + DIY moments,
+            creator/business tips, and custom design work. Tap below for links, custom requests, and brand inquiries.
+          </p>
+
+          <div class="pillset" aria-label="Highlights">
+            <div class="pill">DIY</div>
+            <div class="pill">Lifestyle</div>
+            <div class="pill">Small Biz</div>
+            <div class="pill">Creator</div>
+            <div class="pill">Designer • 113 Design Co</div>
+          </div>
+        </div>
+
+        <div id="links" class="links" aria-label="Links">
+          <!-- NEW: Beacons button -->
+          <a class="btn primaryLink" href="https://beacons.ai/113designs" target="_blank" rel="noreferrer">
+            <div class="left">
+              <div class="icon" aria-hidden="true">113</div>
+              <div class="title">
+                <strong>113 Design Co — Beacons</strong>
+                <span>Shop • Info • Request • Digital</span>
+              </div>
+            </div>
+            <div class="arrow" aria-hidden="true">›</div>
+          </a>
+
+          <a class="btn" href="https://www.instagram.com/rhonne_n_co_/" target="_blank" rel="noreferrer">
+            <div class="left">
+              <div class="icon" aria-hidden="true">IG</div>
+              <div class="title">
+                <strong>Instagram</strong>
+                <span>@rhonne_n_co_</span>
+              </div>
+            </div>
+            <div class="arrow" aria-hidden="true">›</div>
+          </a>
+
+          <a class="btn" href="https://www.tiktok.com/@rhonne_n_co" target="_blank" rel="noreferrer">
+            <div class="left">
+              <div class="icon" aria-hidden="true">TT</div>
+              <div class="title">
+                <strong>TikTok</strong>
+                <span>@rhonne_n_co</span>
+              </div>
+            </div>
+            <div class="arrow" aria-hidden="true">›</div>
+          </a>
+
+          <a class="btn" href="https://www.facebook.com/share/1GJH8eY3k3/?mibextid=wwXIfr" target="_blank" rel="noreferrer">
+            <div class="left">
+              <div class="icon" aria-hidden="true">FB</div>
+              <div class="title">
+                <strong>Facebook</strong>
+                <span>Creator Page</span>
+              </div>
+            </div>
+            <div class="arrow" aria-hidden="true">›</div>
+          </a>
+
+          <a class="btn" href="https://www.threads.com/@113designsco?igshid=NTc4MTIwNjQ2YQ==" target="_blank" rel="noreferrer">
+            <div class="left">
+              <div class="icon" aria-hidden="true">TH</div>
+              <div class="title">
+                <strong>Threads</strong>
+                <span>@113designsco</span>
+              </div>
+            </div>
+            <div class="arrow" aria-hidden="true">›</div>
+          </a>
+
+          <button class="btn" type="button" id="copyEmailBtn">
+            <div class="left">
+              <div class="icon" aria-hidden="true">@</div>
+              <div class="title">
+                <strong>Email</strong>
+                <span id="emailText">rhonnenco@gmail.com</span>
+              </div>
+            </div>
+            <div class="arrow" aria-hidden="true">⧉</div>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid" aria-label="Main sections">
+      <!-- Custom Request Form -->
+      <div class="card" id="request">
+        <h2>Request Custom Items</h2>
+        <p>Share your details below. This opens your email app and sends everything neatly formatted to me.</p>
+
+        <form id="customForm">
+          <div class="row2">
+            <div>
+              <label for="name">Name</label>
+              <input id="name" name="name" placeholder="Your name" autocomplete="name" required />
+            </div>
+            <div>
+              <label for="contact">Your email</label>
+              <input id="contact" name="contact" placeholder="you@email.com" autocomplete="email" required />
+            </div>
+          </div>
+
+          <div class="row2">
+            <div>
+              <label for="type">Item type</label>
+              <select id="type" name="type" required>
+                <option value="" selected disabled>Select one</option>
+                <option>Apparel</option>
+                <option>Party favors</option>
+                <option>Memorial items</option>
+                <option>Balloon install / decor</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div>
+              <label for="date">Needed by (date)</label>
+              <input id="date" name="date" type="date" />
+            </div>
+          </div>
+
+          <div>
+            <label for="details">Details</label>
+            <textarea id="details" name="details" placeholder="What do you want? Quantity, colors, theme, budget range, and any inspiration links." required></textarea>
+          </div>
+
+          <div class="actionRow">
+            <button class="primaryBtn" type="submit">Send Request</button>
+            <button class="ghost" type="reset">Clear</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Media Kit (no link) -->
+      <div class="card" id="media">
+        <h2>Media Kit</h2>
+        <p>Coming soon 🤍</p>
+        <div class="pillset" aria-label="Media kit topics">
+          <div class="pill">Audience + Reach</div>
+          <div class="pill">Content Themes</div>
+          <div class="pill">Rates + Packages</div>
+          <div class="pill">Past Work</div>
+        </div>
+        <div class="actionRow" style="margin-top:10px;">
+          <a class="ghost" href="#brand">Brand Deals Request</a>
+        </div>
+      </div>
+
+      <!-- Brand Deals -->
+      <div class="card" id="brand">
+        <h2>Brand Deals Request</h2>
+        <p>Brands/agencies: share the basics below. This emails me a clean request with everything in one place.</p>
+
+        <form id="brandForm">
+          <div class="row2">
+            <div>
+              <label for="brandName">Brand / Company</label>
+              <input id="brandName" name="brandName" placeholder="Brand name" required />
+            </div>
+            <div>
+              <label for="brandEmail">Your email</label>
+              <input id="brandEmail" name="brandEmail" placeholder="you@brand.com" autocomplete="email" required />
+            </div>
+          </div>
+
+          <div class="row2">
+            <div>
+              <label for="deliverables">Deliverables</label>
+              <input id="deliverables" name="deliverables" placeholder="e.g., 1 Reel + 3 Stories + usage rights" required />
+            </div>
+            <div>
+              <label for="timeline">Timeline</label>
+              <input id="timeline" name="timeline" placeholder="e.g., Feb 10–Feb 20" />
+            </div>
+          </div>
+
+          <div>
+            <label for="campaign">Campaign details</label>
+            <textarea id="campaign" name="campaign" placeholder="Goals, key messages, product link, budget range, and any requirements." required></textarea>
+          </div>
+
+          <div class="actionRow">
+            <button class="primaryBtn" type="submit">Email This Request</button>
+            <a class="ghost" href="#dm">DM Auto-Reply</a>
+          </div>
+        </form>
+      </div>
+
+      <!-- DM Auto Reply -->
+      <div class="card" id="dm">
+        <h2>DM Automatic Reply</h2>
+        <p>A webpage can’t auto-reply to DMs by itself, but here are polished scripts you can paste into IG/Facebook.</p>
+
+        <p style="margin-top:10px">
+          <strong style="color:var(--ink)">Auto-Reply (Custom Items):</strong><br>
+          “Hey love 🤍 Thanks for reaching out! For custom items, tap ‘Request Custom Items’ here:
+          <span class="accent">https://beacons.ai/113designs</span>. Share your deadline + theme and I’ll respond with next steps!”
+        </p>
+
+        <p style="margin-top:10px">
+          <strong style="color:var(--ink)">Auto-Reply (Brand Deals):</strong><br>
+          “Hi! Thanks for your interest in partnering 🤍 Please tap ‘Brand Deals Request’ here:
+          <span class="accent">https://beacons.ai/113designs</span>. I’ll review and reply within 1–2 business days.”
+        </p>
+      </div>
+    </section>
+
+    <footer>
+      <span>© <span id="year"></span> Rhonne C</span>
+      <span style="opacity:.6"> • </span>
+      <a href="#links" style="text-decoration: underline; text-decoration-color: rgba(174,116,116,.55);">Back to top</a>
+    </footer>
+  </div>
+
+  <script>
+    const SETTINGS = { email: "rhonnenco@gmail.com" };
+
+    document.getElementById("emailText").textContent = SETTINGS.email;
+
+    const copyBtn = document.getElementById("copyEmailBtn");
+    copyBtn.addEventListener("click", async () => {
+      try{
+        await navigator.clipboard.writeText(SETTINGS.email);
+        copyBtn.querySelector(".arrow").textContent = "✓";
+        setTimeout(()=> copyBtn.querySelector(".arrow").textContent = "⧉", 900);
+      }catch(e){
+        window.location.href = "mailto:" + encodeURIComponent(SETTINGS.email);
+      }
+    });
+
+    function buildMailto(subject, body){
+      const to = encodeURIComponent(SETTINGS.email);
+      const s = encodeURIComponent(subject);
+      const b = encodeURIComponent(body);
+      return `mailto:${to}?subject=${s}&body=${b}`;
+    }
+
+    document.getElementById("customForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const name = document.getElementById("name").value.trim();
+      const contact = document.getElementById("contact").value.trim();
+      const type = document.getElementById("type").value.trim();
+      const date = document.getElementById("date").value;
+      const details = document.getElementById("details").value.trim();
+
+      const subject = `Custom Request — ${type}${name ? " — " + name : ""}`;
+      const body =
+`CUSTOM REQUEST
+
+Name: ${name}
+Email: ${contact}
+Item Type: ${type}
+Needed By: ${date || "N/A"}
+
+Details:
+${details}
+
+Beacons: https://beacons.ai/113designs
+
+(Submitted from Rhonne C personal page)`;
+
+      window.location.href = buildMailto(subject, body);
+    });
+
+    document.getElementById("brandForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const brandName = document.getElementById("brandName").value.trim();
+      const brandEmail = document.getElementById("brandEmail").value.trim();
+      const deliverables = document.getElementById("deliverables").value.trim();
+      const timeline = document.getElementById("timeline").value.trim();
+      const campaign = document.getElementById("campaign").value.trim();
+
+      const subject = `Brand Deal Inquiry — ${brandName || "Brand"}`;
+      const body =
+`BRAND DEAL REQUEST
+
+Brand/Company: ${brandName}
+Contact Email: ${brandEmail}
+Deliverables: ${deliverables}
+Timeline: ${timeline || "N/A"}
+
+Campaign Details:
+${campaign}
+
+Beacons: https://beacons.ai/113designs
+
+(Submitted from Rhonne C personal page)`;
+
+      window.location.href = buildMailto(subject, body);
+    });
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
